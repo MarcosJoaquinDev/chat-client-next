@@ -31,8 +31,8 @@ export default function Messages({ chatId }: any) {
           <Avatar />
         </Card.Header>
         <Card.Body>
-          {messages.map((m: any) => (
-            <Message msg={m} />
+          {messages.map((m: any, index: number) => (
+            <Message msg={m} key={index} />
           ))}
         </Card.Body>
         <Card.Footer css={{ backgroundColor: "#1f1f1f" }}>
