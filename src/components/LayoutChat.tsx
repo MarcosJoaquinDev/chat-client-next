@@ -6,9 +6,22 @@ import { useChatsData } from "@/hooks/userData";
 import { ChatsHeader } from "./UI";
 import { AddUser } from "./AddUser";
 import { SettingIcon } from "./Icons";
+import { useEffect, useState } from "react";
 
 export default function Layout({ chatId }: any) {
   const chats = useChatsData();
+  const [searchChat, setSearchChat] = useState("");
+  const [chatsFilters, setChatFilters] = useState([]);
+
+  const handleFilter = (e: any) => setSearchChat(e.target.value);
+  useEffect(() => {
+    if (searchChat) {
+      const filters = chats.filter((chat: any) =>
+        chat.name.toLowerCase().includes(searchChat)
+      );
+      setChatFilters(filters);
+    }
+  }, [searchChat]);
   return (
     <Grid.Container
       gap={1}
@@ -21,26 +34,36 @@ export default function Layout({ chatId }: any) {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            marginTop: "10px",
           }}
         >
           <AddUser />
-          <Button css={{ backgroundColor: "transparent" }} auto>
+          <Button css={{ backgroundColor: "transparent", padding: "0" }} auto>
             <SettingIcon />
           </Button>
         </aside>
         <ChatsHeader>
           <Input
             bordered
+            value={searchChat}
+            aria-labelledby=""
+            onChange={handleFilter}
             placeholder="Buscar"
             size="md"
             color="primary"
             css={{ color: "#fff" }}
           />
-          {chats?.map((chat: any) => (
-            <Link href={`/chat/${chat.roomId}`} key={chat.roomId}>
-              <ChatTab chat={chat} />
-            </Link>
-          ))}
+          {!searchChat.length
+            ? chats?.map((chat: any) => (
+                <Link href={`/chat/${chat.roomId}`} key={chat.roomId}>
+                  <ChatTab chat={chat} />
+                </Link>
+              ))
+            : chatsFilters?.map((chat: any) => (
+                <Link href={`/chat/${chat.roomId}`} key={chat.roomId}>
+                  <ChatTab chat={chat} />
+                </Link>
+              ))}
         </ChatsHeader>
       </Grid>
       <Grid xs={8}>

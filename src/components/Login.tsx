@@ -18,7 +18,6 @@ export default function Login() {
       if (resLogin.type === "Password Invalid") setErrorLogin(resLogin.error);
     }
     if (resLogin === false) {
-      console.log(resLogin);
       router.push("/chat");
     }
   }, [resLogin]);
@@ -35,6 +34,7 @@ export default function Login() {
       <Text h3>Ingresar</Text>
       <Spacer y={2.5} />
       <Input
+        aria-labelledby=""
         clearable
         underlined
         labelPlaceholder="Email"

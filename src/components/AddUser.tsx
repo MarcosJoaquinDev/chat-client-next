@@ -28,7 +28,15 @@ export function AddUser() {
   };
   return (
     <>
-      <Button onPress={handler} css={{ backgroundColor: "transparent" }} auto>
+      <Button
+        onPress={handler}
+        css={{
+          backgroundColor: "transparent",
+          padding: "6px",
+          marginLeft: "6px",
+        }}
+        auto
+      >
         <AddUserIcon />
       </Button>
       <Modal
@@ -56,6 +64,7 @@ export function AddUser() {
               clearable
               bordered
               fullWidth
+              aria-labelledby=""
               label="Email"
               placeholder="example@domain.com"
               {...register("email", { required: true })}

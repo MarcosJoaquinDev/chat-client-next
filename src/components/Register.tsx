@@ -1,8 +1,10 @@
 import { Button, Card, Input, Spacer, Text } from "@nextui-org/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import style from "./ui.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSetNewUser } from "@/hooks/userData";
+import { useRouter } from "next/router";
+import useLogin from "@/hooks/login";
 
 export default function Register() {
   const {
@@ -10,17 +12,32 @@ export default function Register() {
     register,
     formState: { errors },
   } = useForm<RegisterData>();
-
   const [data, setData] = useState<RegisterData | null>(null);
+  const [errorPic, setErrorPic] = useState(false);
+
+  const navigation = useRouter();
+  const initialData = { email: "", password: "" };
+  const [login, setLogin] = useState<LoginData>(initialData);
+  const resLogin: any = useLogin(login.email, login.password);
+
   const res = useSetNewUser(data);
-  console.log(res);
+
+  useEffect(() => {
+    if (res && data) {
+      setLogin({ email: data.email, password: data.password });
+    }
+    if (resLogin == false) {
+      navigation.push("/chat");
+    }
+  }, [res, resLogin]);
+
   const handle: SubmitHandler<RegisterData> = (formData) => {
     if (fileDataURL) {
       const { username, email, password } = formData;
       let userData = { username, email, password, img: fileDataURL };
       setData(userData);
     } else {
-      console.log("no hay foto");
+      setErrorPic(true);
     }
   };
 
@@ -45,6 +62,7 @@ export default function Register() {
       <Input
         clearable
         underlined
+        aria-labelledby=""
         labelPlaceholder="Usuario"
         {...register("username", { required: true })}
       />
@@ -56,6 +74,7 @@ export default function Register() {
       <Input
         clearable
         underlined
+        aria-labelledby=""
         labelPlaceholder="Email"
         {...register("email", { required: true })}
       />
@@ -67,6 +86,7 @@ export default function Register() {
       <Input.Password
         clearable
         underlined
+        aria-labelledby=""
         labelPlaceholder="Contraseña"
         {...register("password", { required: true })}
       />
@@ -84,7 +104,9 @@ export default function Register() {
         </Card.Body>
       </Card>
       <Spacer y={1.5} />
-
+      <span style={{ color: "red" }}>
+        {errorPic && "Este campo es requerido"}
+      </span>
       <div style={{ display: "flex", justifyContent: "space-around" }}>
         <Button color="success" type="submit">
           Aceptar

@@ -2,8 +2,8 @@ import { useUserData } from "@/hooks/userData";
 import { Text } from "@nextui-org/react";
 export default function Message({ msg }: any) {
   const data = useUserData();
-  const side = data.email === msg.from ? "end" : "";
-  const color = data.email === msg.from ? "black" : "#0f0e0e";
+  const side = data?.email === msg.from ? "end" : "";
+  const color = data?.email === msg.from ? "black" : "#0f0e0e";
   return (
     <div
       style={{

@@ -23,6 +23,7 @@ export default function NewMessages({ room }: any) {
         onInput={(e: any) => setMessage(e.target.value)}
         value={message}
         size="md"
+        aria-labelledby=""
         contentRightStyling={false}
         {...register("message", { required: true })}
         placeholder="Type your message..."

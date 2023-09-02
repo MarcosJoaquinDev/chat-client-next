@@ -14,7 +14,7 @@ export default function ChatPage() {
       <div
         style={{
           marginTop: "20px",
-          marginLeft: "30px",
+          marginLeft: "10px",
           display: "flex",
           flexDirection: "column",
           alignItems: "start",
